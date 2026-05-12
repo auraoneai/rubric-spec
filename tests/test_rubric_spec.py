@@ -1,4 +1,4 @@
-import json, subprocess, sys
+import json, os, subprocess, sys
 from pathlib import Path
 from rubric_spec import validate, diff_rubrics, lint_rubric
 from rubric_spec.adapters import inspect_ai, promptfoo, deepeval, langsmith, evalkit
@@ -26,5 +26,7 @@ def test_adapter_round_trips_spec_shape():
         assert adapter.to_spec(native)["version"] == "auraone-rubric-v1"
 
 def test_cli_validate():
-    proc = subprocess.run([sys.executable, "-m", "rubric_spec.cli", "validate", str(ROOT / "examples/minimal_rubric.json")], text=True, capture_output=True)
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(ROOT / "src")
+    proc = subprocess.run([sys.executable, "-m", "rubric_spec.cli", "validate", str(ROOT / "examples/minimal_rubric.json")], text=True, capture_output=True, env=env)
     assert proc.returncode == 0, proc.stderr + proc.stdout
