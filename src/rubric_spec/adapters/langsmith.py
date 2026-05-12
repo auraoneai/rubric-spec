@@ -6,7 +6,9 @@ FRAMEWORK = __name__.split(".")[-1]
 
 def to_spec(native: dict[str, Any]) -> dict[str, Any]:
     if native.get("version") == "auraone-rubric-v1":
-        return deepcopy(native)
+        spec = deepcopy(native)
+        spec.pop("framework", None)
+        return spec
     criteria = native.get("criteria") or native.get("checks") or native.get("graders") or native.get("feedback") or native.get("test_cases") or []
     spec_criteria = []
     for idx, item in enumerate(criteria):

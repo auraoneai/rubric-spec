@@ -1,6 +1,6 @@
 import json, os, subprocess, sys
 from pathlib import Path
-from rubric_spec import validate, diff_rubrics, lint_rubric
+from rubric_spec import validate, diff_rubrics, lint_rubric, run_conformance
 from rubric_spec.adapters import inspect_ai, promptfoo, deepeval, langsmith, evalkit
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,10 +23,24 @@ def test_adapter_round_trips_spec_shape():
     rubric = json.loads((ROOT / "examples/minimal_rubric.json").read_text())
     for adapter in [inspect_ai, promptfoo, deepeval, langsmith, evalkit]:
         native = adapter.from_spec(rubric)
-        assert adapter.to_spec(native)["version"] == "auraone-rubric-v1"
+        assert adapter.to_spec(native) == rubric
 
 def test_cli_validate():
     env = os.environ.copy()
     env["PYTHONPATH"] = str(ROOT / "src")
     proc = subprocess.run([sys.executable, "-m", "rubric_spec.cli", "validate", str(ROOT / "examples/minimal_rubric.json")], text=True, capture_output=True, env=env)
     assert proc.returncode == 0, proc.stderr + proc.stdout
+
+
+def test_conformance_runs_adapter_checks():
+    report = run_conformance(ROOT / "examples/minimal_rubric.json")
+    assert report.ok, report.to_dict()
+    assert report.to_dict()["case_count"] == 11
+
+
+def test_cli_conformance():
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(ROOT / "src")
+    proc = subprocess.run([sys.executable, "-m", "rubric_spec.cli", "conformance", str(ROOT / "examples/minimal_rubric.json")], text=True, capture_output=True, env=env)
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    assert json.loads(proc.stdout)["passed"] == 11
