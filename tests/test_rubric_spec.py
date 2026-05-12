@@ -35,7 +35,7 @@ def test_cli_validate():
 def test_conformance_runs_adapter_checks():
     report = run_conformance(ROOT / "examples/minimal_rubric.json")
     assert report.ok, report.to_dict()
-    assert report.to_dict()["case_count"] == 11
+    assert report.to_dict()["case_count"] == 18
 
 
 def test_cli_conformance():
@@ -43,4 +43,4 @@ def test_cli_conformance():
     env["PYTHONPATH"] = str(ROOT / "src")
     proc = subprocess.run([sys.executable, "-m", "rubric_spec.cli", "conformance", str(ROOT / "examples/minimal_rubric.json")], text=True, capture_output=True, env=env)
     assert proc.returncode == 0, proc.stderr + proc.stdout
-    assert json.loads(proc.stdout)["passed"] == 11
+    assert json.loads(proc.stdout)["passed"] == 18
