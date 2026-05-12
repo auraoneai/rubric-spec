@@ -1,0 +1,35 @@
+[build-system]
+    requires = ["setuptools>=68", "wheel"]
+    build-backend = "setuptools.build_meta"
+
+    [project]
+    name = "rubric-spec"
+    version = "0.1.0"
+    description = "Portable AuraOne Rubric Schema v1 validator and adapters."
+    readme = "README.md"
+    requires-python = ">=3.10"
+    license = "MIT"
+    authors = [{ name = "AuraOne" }]
+    classifiers = [
+      "Development Status :: 3 - Alpha",
+      "Programming Language :: Python :: 3",
+      "Programming Language :: Python :: 3.10",
+      "Programming Language :: Python :: 3.11",
+      "Programming Language :: Python :: 3.12",
+    ]
+    dependencies = []
+
+    [project.urls]
+    Homepage = "https://auraone.ai/open"
+    Source = "https://github.com/auraoneai/rubric-spec"
+
+    [project.scripts]
+rubric-spec = "rubric_spec.cli:main"
+
+    [tool.setuptools.packages.find]
+    where = ["src"]
+
+    [tool.pytest.ini_options]
+    addopts = "-q"
+    pythonpath = ["src"]
+    testpaths = ["tests"]
