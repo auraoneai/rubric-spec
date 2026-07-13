@@ -1,35 +1,44 @@
 [build-system]
-    requires = ["setuptools>=68", "wheel"]
-    build-backend = "setuptools.build_meta"
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
 
-    [project]
-    name = "rubric-spec"
-    version = "0.1.1"
-    description = "Portable AuraOne Rubric Schema v1 validator and adapters."
-    readme = "README.md"
-    requires-python = ">=3.10"
-    license = "MIT"
-    authors = [{ name = "AuraOne" }]
-    classifiers = [
-      "Development Status :: 3 - Alpha",
-      "Programming Language :: Python :: 3",
-      "Programming Language :: Python :: 3.10",
-      "Programming Language :: Python :: 3.11",
-      "Programming Language :: Python :: 3.12",
-    ]
-    dependencies = []
+[project]
+name = "rubric-spec"
+version = "0.1.2"
+description = "Validate, lint, diff, and convert portable LLM evaluation rubrics with AuraOne Rubric Schema v1."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "AuraOne" }]
+keywords = ["llm-evaluation", "rubric", "rubric-schema", "llm-as-judge", "evals"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = []
 
-    [project.urls]
-    Homepage = "https://auraone.ai/open"
-    Source = "https://github.com/auraoneai/rubric-spec"
+[project.urls]
+Homepage = "https://github.com/auraoneai/rubric-spec"
+Documentation = "https://github.com/auraoneai/rubric-spec#readme"
+Repository = "https://github.com/auraoneai/rubric-spec.git"
+Issues = "https://github.com/auraoneai/rubric-spec/issues"
+Changelog = "https://github.com/auraoneai/rubric-spec/blob/main/CHANGELOG.md"
 
-    [project.scripts]
+[project.scripts]
 rubric-spec = "rubric_spec.cli:main"
 
-    [tool.setuptools.packages.find]
-    where = ["src"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
-    [tool.pytest.ini_options]
-    addopts = "-q"
-    pythonpath = ["src"]
-    testpaths = ["tests"]
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = ["src"]
+testpaths = ["tests"]

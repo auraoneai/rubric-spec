@@ -1,43 +1,60 @@
 # rubric-spec
 
-`rubric-spec` is the reference implementation for AuraOne Rubric Schema v1, a portable rubric format that can move between Inspect AI, PromptFoo, DeepEval, LangSmith, and EvalKit without losing criterion ids, anchors, weights, judge prompt contracts, or provenance.
+Validate, lint, diff, and convert LLM evaluation rubrics with AuraOne Rubric Schema v1.
+
+`rubric-spec` is for evaluation engineers and tool builders who need one inspectable rubric artifact across review and scoring systems. Its differentiator is a canonical JSON contract for criterion ids, anchors, weights, tie-break rules, judge prompt requirements, examples, and provenance. The adapters convert JSON shapes; they do not run or contact Inspect AI, PromptFoo, DeepEval, LangSmith, or EvalKit.
+
+## Inspectable Output
+
+| Command | Proof produced |
+| --- | --- |
+| `validate` | JSON with `ok`, path-aware errors, and warnings |
+| `lint` | JSON findings for weight totals, vague wording, compound criteria, and missing examples |
+| `diff` | JSON with added, removed, and changed criteria, weight deltas, and anchor changes |
+| `convert` | Converted JSON on stdout after validating the canonical rubric |
+| `conformance` | An 18-case JSON report covering schema rules and bundled adapter round trips |
+
+## Runtime Boundary
+
+All commands read local JSON or JSONL files and write to stdout. The package has no runtime dependencies, makes no network requests, and performs no model calls. Conversion support is limited to the bundled adapter representations; successful conversion is not a claim that an external framework can execute the result.
+
+## Install
+
+```bash
+python -m pip install rubric-spec==0.1.2
+```
+
+For development from a clone:
+
+```bash
+python -m pip install -e .
+```
 
 ## Quickstart
 
+From a repository checkout with the bundled synthetic examples:
+
 ```bash
-python -m venv .venv
-. .venv/bin/activate
-pip install rubric-spec
-rubric-spec validate examples/minimal_rubric.json
-rubric-spec conformance
+rubric-spec validate examples/minimal_rubric.json > validation.json
+rubric-spec lint examples/minimal_rubric.json > lint-findings.json
+rubric-spec diff examples/minimal_rubric.json examples/multi_criteria_rubric.json > rubric-diff.json
+rubric-spec conformance examples/minimal_rubric.json > conformance.json
 ```
 
-## Adapter Migration Guides
+## Documentation
 
-- Inspect AI: export scorer criteria as JSON, then run `rubric-spec convert --from inspect_ai --to rubric_spec inspect.json`.
-- PromptFoo: map `assert`/grading configs into criteria; `from_spec` preserves weights and anchors.
-- DeepEval: test case metrics become rubric criteria.
-- LangSmith: feedback schema entries become criteria.
-- EvalKit: JSONL rows round-trip into the canonical v1 object.
+- Schema: [`spec/rubric-schema-v1.md`](spec/rubric-schema-v1.md)
+- Conformance cases: [`spec/conformance-tests.md`](spec/conformance-tests.md)
+- Synthetic examples: [`examples/`](examples/)
 
-## FAQ
+## Release Status
 
-### Why a spec?
+Registry status verified July 13, 2026: version `0.1.2` is published on PyPI and tagged `v0.1.2` in the public repository. The project is alpha software. No usage, adoption, or benchmark claim is made.
 
-Rubrics are operational contracts. A named schema makes reviews portable, diffable, lintable, and conformance-testable.
+## Limits
 
-### Why not OpenEval?
+This package does not orchestrate evaluation runs, certify downstream framework compatibility, or supply production rubrics. Bundled examples are synthetic.
 
-This package focuses on the human-judgment layer: anchors, tie-break rules, reviewer-facing examples, judge prompt contracts, and provenance. It can be used alongside broader eval orchestration standards.
+## Next Action
 
-### How is this different from OpenAI Evals YAML?
-
-OpenAI Evals YAML configures a run. AuraOne Rubric Schema v1 defines the rubric artifact itself so it can be reused across runners.
-
-## What This Is Not
-
-This is not a leaderboard, a benchmark claim, or a source of real customer rubrics. All bundled examples are synthetic.
-
-## Conformance
-
-The conformance suite is defined in `spec/conformance-tests.md` and can be surfaced with `rubric-spec conformance`.
+Run `validate` and `lint` on the rubric you plan to ship, resolve every validation error, then run `conformance` before converting it for one supported target.
