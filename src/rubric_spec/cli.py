@@ -1,7 +1,7 @@
 from __future__ import annotations
 import argparse, importlib, json, sys
 from pathlib import Path
-from .validate import validate, load_rubric, validate_rubric
+from .validate import validate, validate_rubric
 from .diff import diff
 from .lint import lint
 from .conformance import run_conformance
