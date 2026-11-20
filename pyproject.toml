@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rubric-spec"
 version = "0.1.2"
-description = "Validate, lint, diff, and convert portable LLM evaluation rubrics with AuraOne Rubric Schema v1."
+description = "LLM evaluation rubric schema: validate, lint, diff, and convert portable rubrics with AuraOne Rubric Schema v1."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -26,7 +26,8 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/auraoneai/rubric-spec"
+Homepage = "https://auraone.ai/open/evalkit"
+Source = "https://github.com/auraoneai/rubric-spec"
 Documentation = "https://github.com/auraoneai/rubric-spec#readme"
 Repository = "https://github.com/auraoneai/rubric-spec.git"
 Issues = "https://github.com/auraoneai/rubric-spec/issues"
