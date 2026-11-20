@@ -1,5 +1,16 @@
 # rubric-spec
 
+**LLM evaluation rubric schema and CLI**: validate, lint, diff, and convert portable rubrics.
+
+> Part of [AuraOne EvalKit](https://auraone.ai/open/evalkit). EvalKit depends on `rubric-spec` and accepts canonical `rubric-spec` objects in `evalkit validate-rubric` and scoring.
+
+## Quick Start
+
+```bash
+python -m pip install rubric-spec==0.1.2
+rubric-spec validate examples/minimal_rubric.json > validation.json
+```
+
 Validate, lint, diff, and convert LLM evaluation rubrics with AuraOne Rubric Schema v1.
 
 `rubric-spec` is for evaluation engineers and tool builders who need one inspectable rubric artifact across review and scoring systems. Its differentiator is a canonical JSON contract for criterion ids, anchors, weights, tie-break rules, judge prompt requirements, examples, and provenance. The adapters convert JSON shapes; they do not run or contact Inspect AI, PromptFoo, DeepEval, LangSmith, or EvalKit.
